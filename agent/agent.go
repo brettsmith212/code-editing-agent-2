@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"agent/logger"
 	"agent/tools"
+
+	"github.com/anthropics/anthropic-sdk-go"
 )
 
 type Agent struct {
@@ -41,6 +43,7 @@ func (a *Agent) Run(ctx context.Context) error {
 				break
 			}
 
+			logger.LogMessage("User", userInput)
 			userMessage := anthropic.NewUserMessage(anthropic.NewTextBlock(userInput))
 			conversation = append(conversation, userMessage)
 		}
@@ -56,6 +59,7 @@ func (a *Agent) Run(ctx context.Context) error {
 			switch content.Type {
 			case "text":
 				fmt.Printf("\u001b[93mClaude\u001b[0m: %s\n", content.Text)
+				logger.LogMessage("Claude", content.Text)
 			case "tool_use":
 				result := a.executeTool(content.ID, content.Name, content.Input)
 				toolResults = append(toolResults, result)
