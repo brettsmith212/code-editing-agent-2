@@ -33,7 +33,12 @@ func main() {
 		return scanner.Text(), true
 	}
 
-	toolDefs := []tools.ToolDefinition{tools.ReadFileDefinition, tools.ListFilesDefinition, tools.EditFileDefinition}
+	toolDefs := []tools.ToolDefinition{
+		tools.ReadFileDefinition,
+		tools.ListFilesDefinition,
+		tools.EditFileDefinition,
+		tools.RunShellCommandDefinition,
+	}
 	myAgent := agent.NewAgent(&client, getUserMessage, toolDefs)
 	err := myAgent.Run(context.TODO())
 	if err != nil {
